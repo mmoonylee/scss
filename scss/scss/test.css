@@ -1,0 +1,61 @@
+.company__item {
+  width: 25%;
+}
+.company__link {
+  display: flex;
+  color: #413c3c;
+}
+.item {
+  color: red;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+  background-image: url("images/icon_stripe.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.let_test {
+  padding: 30px;
+}
+.let_test span {
+  padding: 30px;
+}
+
+.let_test3 {
+  padding: 40px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon--vision {
+  background-image: url("image/icon.png");
+  background-repeat: no-repeat;
+  background-position: 0 0;
+}
+
+.btn-default {
+  width: 100%;
+  max-width: 150px;
+  padding: 0 10px;
+}
+.btn-default--radius {
+  border-radius: 30px;
+}
+.btn-default--border {
+  border-bottom: 2px solid #eee;
+}
+
+.floating, .header.search-open {
+  background-color: #fff;
+}
+
+.header.active {
+  background-color: #fff;
+}/*# sourceMappingURL=test.css.map */
