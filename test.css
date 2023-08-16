@@ -1,3 +1,9 @@
+.import-test__item .flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .company__item {
   width: 25%;
 }
@@ -17,15 +23,15 @@
   background-position: center center;
 }
 
+.let_test3 {
+  padding: 40px;
+}
+
 .let_test {
   padding: 30px;
 }
 .let_test span {
   padding: 30px;
-}
-
-.let_test3 {
-  padding: 40px;
 }
 
 .item {
@@ -45,14 +51,8 @@
   max-width: 150px;
   padding: 0 10px;
 }
-.btn-default--radius {
-  border-radius: 30px;
-}
-.btn-default--border {
-  border-bottom: 2px solid #eee;
-}
 
-.floating, .header.search-open {
+.floating, .header.active {
   background-color: #fff;
 }
 

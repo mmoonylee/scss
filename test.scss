@@ -1,0 +1,159 @@
+
+//📌참고자료
+// Sass(SCSS) 완전 정복! https://heropy.blog/2018/01/31/sass/
+// Sass(scss) 정리 https://velog.io/@jhyun_k/Sassscss-정리
+
+
+// 💕 들어가기 전에
+// ✔ 주석 사용법
+/* 컴파일 되는 주석 */
+// 컴파일 되지 않는 주석
+
+
+// 💕원리 : sass,scss 는 css가 아닌 스크립팅 언어이기 떄문에 웹에 바로 적용 X ,
+//전처리기를 통해  css 화 시켜야함 - "컴파일"
+
+// 💕장점 : css 와 잘 호환된다 (sass 대비)
+//           코드의 가속성과 재사용성을 높여주며 심플한 표기법 → css 구조를 평준화
+
+// 💕기능 :
+
+    // ───────────  분할·모듈화  ──────────────
+    // ✔ scss 파일이름 앞에 _를 붙이면 전처리? 같이 안됨
+    // 그냥 불러와서 사용하는 파일은 _붙여서 @import 하여 사용
+    // _header.scss, main.scss, _footer.scss ---- 컴파일 ---> main.css 만 생성(header,footer는 @import)
+    // 각 기능과 부분으로 나눠 유지보수가 쉽도록 관리나 성능 차원
+
+    // @import "flex";
+    // @use "flex";
+    // @import "header", "footer";
+    .import-test{
+        &__item{
+            @import "flex";
+        }
+    }
+
+    // ───────────  중첩 (Nesting)  ──────────────
+    // ✔ & (엠퍼샌드) : 상위 부모선택자 중첩
+    // ✔ @at-root 중첩에서 벗어나기 :중첩 안에서 생성하되 중첩 밖에서 사용해야 경우에 유용
+    .company{
+        &__item{
+            width:25%;
+        }
+        &__link{
+            display: flex;
+            color:#413c3c;
+            @at-root .item{color:red}
+        }
+    }
+    // ✔ css속성중첩
+    .icon{
+        width:32px;
+        height:32px;
+        background : {
+            image:url("images/icon_stripe.png");
+            repeat:no-repeat;
+            position:center center;
+        }
+    }
+
+    // ─────────── 변수  ───────────
+    // ✔ 변수의 Type : number, string, bloolens, null 이외에도 color, lists, maps 등..
+    // boolean : (&&=and) (||=or) (!=not)
+    // list 공백이나 , 로 구분된 값의 목록 : ex) (apple, orange, banana) 또는 item index 등
+    // maps key:value 형태 : ex) (company:0, product:1, news:2) 괄호로 구분 필수!
+    // ✔ 변수의 Scope : 전역변수, 지역변수
+    // ✔ 변수 선언하기 : $변수이름:속성값;
+    $sub_slug:"company";
+    .sub-visual__img{background-image:url("/uploads/media/" + $sub_slug +".jpg");}
+
+    $global-padding:40px; // 전역변수
+    .let_test3{padding:$global-padding;}
+    .let_test{
+        $test_pd:30px; // 지역변수
+        padding:$test_pd;
+        span{
+            padding:$test_pd;
+        }
+    }
+    // .let_test2{padding:$test_pd;} // --> 지역은 밖에서 못불러옴
+    // 또는 안에서 !global; 을 사용하여 전역변수로 만들 수 있다 (!important 와 비슷하여 권장하지않음)
+    // !default 로 유연하게 사용가능.  해당 속성값을 반영하겠지만 기본 값이 있다면 그것을 따르겠다~. 이런 의미
+    $gray-100: #f8f9fa !default;
+
+
+    // ─────────── Mixins (Mix & Include)  ───────────
+    // ✔ 사용법 : @mixin --{} 이름(--)지어 만들고, @include --; 불러와서 사용
+    @mixin flex{
+        display:flex;align-items:center;justify-content:center;
+    }
+    .item{
+        @include flex;
+    }
+    // ✔ 인수 넣기 (파선아실 : parameter 선언, arguments는 실행)
+    @mixin stripe_icon($url, $positionX, $positionY){
+        background-image:url($url);
+        background-repeat:no-repeat;
+        background-position: $positionX $positionY;
+    }
+    .icon--vision{
+        @include stripe_icon("image/icon.png", 0, 0);
+    }
+    // 인수 기본값 지정
+    @mixin btn($width:150px, $height:55px, $pd:0 20px){
+        width:100%;
+        max-width:$width;
+        height:$height;
+        padding: $pd;
+    }
+    .btn-default{
+        @include btn(150px, null, 0 10px); // 
+        // 😇 null을 쓰면 아예 빠져버린다.
+        // + 속성값으로 null 사용시 컴파일하지 않는다.
+    }
+
+    // ─────────── Extend  ───────────
+    // : 다른 선택자의 모든 스타일을 가져야하는 경우
+    // : 연관있는 코드가 중복될 때 사용 (존똑일때) 
+    // : 확장은 부작용을 가져오기도 하므로 사용을 권장하지 않으며, 위에서 살펴본 Mixin을 대체 기능 (https://sass-guidelin.es/ko/#extend)
+    // 1) .class 가져오기
+    .floating{
+        background-color: #fff;
+    }
+    .header.active{
+        @extend .floating;
+    }
+    // 2. % 로 선택자 만들기
+    %active-header{
+        background-color:#fff;
+    }
+    .header.active{
+        @extend %active-header;
+    }
+
+    // ─────────── Content  ───────────
+    //  : 해당 부분에 원하는 스타일 블록 을 전달 
+    @mixin icon($url) {
+        &::after {
+          content: $url;
+          @content;
+        }
+      }
+      .icon1 {
+        // icon Mixin의 기존 기능만 사용
+        @include icon("/images/icon.png");
+      }
+
+
+    //   mixin extend content 정확한 차이를 아직 모르겠다.. 😇
+
+    // ─────────── 조건문, 반복문, 함수  ───────────
+    // ✔ 조건문
+
+
+
+
+
+
+
+
